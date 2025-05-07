@@ -5,7 +5,7 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 import type { ICatchError } from '../../utils/interfaces';
 
 export const fooRoutes = async (fastify: FastifyInstance) => {
-    fastify.withTypeProvider<ZodTypeProvider>().post('/foo', {
+    fastify.withTypeProvider<ZodTypeProvider>().post('/foo/:foo/:bar', {
         schema: {
             querystring: schema.fooBar,
             body:  schema.fooBar,

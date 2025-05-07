@@ -6,18 +6,9 @@ import * as ffZod from "fastify-type-provider-zod";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUI from "@fastify/swagger-ui";
 import ffCors from "@fastify/cors";
-import pino from "pino";
+import { logger } from "./utils/logger"
 
 const PORT = env.PORT || 3000;
-
-const logger = pino({
-	transport: {
-		target: "pino-pretty",
-		options: {
-			colorize: true,
-		},
-	},
-});
 
 const ff = fastify({
 	logger: {
@@ -54,5 +45,13 @@ ff.register(ffCors, {
 
 ff.register(router);
 
-await startPool();
-await ff.listen({ port: PORT, host: "0.0.0.0" });
+try {
+	logger.info("Creating a Oracle Pool.")
+	await startPool();
+	logger.info("Oracle Pool created. 🐒")
+	ff.listen({ port: PORT, host: "0.0.0.0" });
+	logger.info("Documentation at / 🐒")
+} catch (error) {
+	logger.error(error);
+	process.exit(1);
+}

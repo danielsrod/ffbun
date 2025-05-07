@@ -23,6 +23,7 @@ const executeOptions: oracledb.ExecuteOptions = {
 export const startPool = async () => {
     try {
         await oracledb.createPool(options);
+		await executeQuery({ sql, binds })
     } catch (error) {
         const { stack } = error as ICatchError
         throw new Error(stack)
@@ -42,3 +43,6 @@ export const executeQuery = async <T>(prop: IOracleQueryOptions): Promise<oracle
 		await pool.close();
 	}
 };
+
+const sql = 'select 1 from dual';
+const binds = {};
